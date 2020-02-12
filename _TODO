@@ -1,0 +1,8 @@
+-Implement metrobus "bus", subway "subway" keyword shortcuts
+-Email weekly expense summary
+-"Daily budget nearly reached" warning
+-Export expenses as Excel file
+-Run custom queries via text (Require password? Guard against SQL injection)
+-Create a way to backfill forgotten expense records for a given date
+-Upgrade to production-safe WSGI server
+-Remember to add & run more unit tests

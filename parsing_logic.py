@@ -1,0 +1,13 @@
+import datetime
+import re
+
+
+
+
+def parse_expense(input):
+
+    sms_syntax = re.compile('(?P<cost>\d+)'                  #Some num of digits = cost
+                            '(?: for (?P<item>.+?))?'        #Everything after "for" = item, optional
+                            '(?: at (?P<location>.+))?$')    #Everything after "at" = location, optional
+    parsed_result = tuple([str(datetime.date.today())]+list((sms_syntax.search(input).group('cost', 'item', 'location'))))
+    return parsed_result

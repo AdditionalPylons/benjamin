@@ -27,7 +27,11 @@ def query_spent_today():
     connection = sqlite3.connect('expense_history.db')
     cursor = connection.cursor()
     cursor.execute(f"SELECT SUM(cost) FROM expenses WHERE date = '{today}'")
-    print(cursor.fetchone())
+    result = cursor.fetchone()[0]
+    if result is None:
+        return 0
+    else:
+        return result
     connection.commit()
     connection.close()
 
@@ -39,9 +43,9 @@ def add_entry(date,cost,item='NULL',location='NULL'):
     connection.close()
 
 def custom_query(query):
-        connection = sqlite3.connect('expense_history.db')
-        cursor = connection.cursor()
-        cursor.execute(query)
-        print(cursor.fetchall())
-        connection.commit()
-        connection.close()
+    connection = sqlite3.connect('expense_history.db')
+    cursor = connection.cursor()
+    cursor.execute(query)
+    print(cursor.fetchall())
+    connection.commit()
+    connection.close()

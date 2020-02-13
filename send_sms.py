@@ -1,6 +1,7 @@
 import os
 
 from twilio.rest import Client
+from database_commands import query_spent_today
 
 account_sid = os.environ.get('twilio_account_sid')
 auth_token = os.environ.get('twilio_auth_token')
@@ -18,3 +19,20 @@ def custom_notif(notif):
     body = notif
 
 )
+
+
+def check_alerts():
+    spent = int(query_spent_today())
+    remaining = 300 - spent
+    infinity = float("inf")
+
+    alerts = {
+
+    (200, 300): f"Warning: You've spent {spent} pesos. Only {remaining} remaining!",
+    (300, infinity): f"Warning: You've spent {spent} pesos. Any more and you'll go over budget for today!"
+
+    }
+
+    for (a,b) in alerts.keys():
+        if a <= spent < b:
+            custom_notif(alerts[(a,b)])

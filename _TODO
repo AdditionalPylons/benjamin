@@ -1,6 +1,6 @@
 -Implement metrobus "bus", subway "subway" keyword shortcuts  --CODED, PASSED TESTING 02/12
 -Email weekly expense summary
--"Daily budget nearly reached" warning  --IN PROGRESS
+-"Daily budget nearly reached" warning  --CODED, PASSED TESTING 02/13
 -Export expenses as Excel file
 -Run custom queries via text (Require password? Guard against SQL injection)
 -Create a way to backfill forgotten expense records for a given date

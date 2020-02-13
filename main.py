@@ -1,8 +1,9 @@
 from flask import Flask, request, redirect
 from twilio.twiml.messaging_response import MessagingResponse
 
-from database_commands import add_entry, query_all, query_all_today
+from database_commands import add_entry
 from parsing_logic import parse_expense, shortcuts
+from send_sms import check_alerts
 
 application = Flask(__name__)
 
@@ -20,7 +21,7 @@ def ingest_message():
         else:
             add_entry(*parse_expense(message_body))
         response.message('Entry successfully added!')
-
+        check_alerts()
     except:
         response.message('Failed to add entry.')
     finally:

@@ -2,7 +2,7 @@ from flask import Flask, request, redirect
 from twilio.twiml.messaging_response import MessagingResponse
 
 from database_commands import add_entry, query_all, query_all_today
-from parsing_logic import parse_expense
+from parsing_logic import parse_expense, shortcuts
 
 application = Flask(__name__)
 
@@ -15,7 +15,10 @@ def ingest_message():
     try:
         #USAGE NOTE: When using add_entry with parse_expense, you MUST unpack the resulting tuple with * as follows:
         #add_entry(*parse_expense('123 for some thing at some place'))
-        add_entry(*parse_expense(message_body))
+        if message_body in shortcuts:
+            add_entry(*parse_expense(shortcuts[message_body]))
+        else:
+            add_entry(*parse_expense(message_body))
         response.message('Entry successfully added!')
 
     except:

@@ -4,6 +4,7 @@ import datetime
 
 table = 'expenses'
 table_columns = '(date, cost, item, location)'
+today = str(datetime.date.today())
 
 
 def query_all():
@@ -15,12 +16,18 @@ def query_all():
     connection.close()
 
 def query_all_today():
-    today = str(datetime.date.today())
-
     connection = sqlite3.connect('expense_history.db')
     cursor = connection.cursor()
     cursor.execute(f"SELECT * FROM expenses WHERE date = '{today}'")
     print(cursor.fetchall())
+    connection.commit()
+    connection.close()
+
+def query_spent_today():
+    connection = sqlite3.connect('expense_history.db')
+    cursor = connection.cursor()
+    cursor.execute(f"SELECT SUM(cost) FROM expenses WHERE date = '{today}'")
+    print(cursor.fetchone())
     connection.commit()
     connection.close()
 

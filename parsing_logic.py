@@ -11,3 +11,10 @@ def parse_expense(input):
                             '(?: at (?P<location>.+))?$')    #Everything after "at" = location, optional
     parsed_result = tuple([str(datetime.date.today())]+list((sms_syntax.search(input).group('cost', 'item', 'location'))))
     return parsed_result
+
+shortcuts = {
+
+"bus": "6 for metrobus",
+"subway": "5 for subway"
+
+}

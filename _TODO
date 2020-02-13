@@ -1,8 +1,9 @@
--Implement metrobus "bus", subway "subway" keyword shortcuts
+-Implement metrobus "bus", subway "subway" keyword shortcuts  --CODED, PASSED TESTING 02/12
 -Email weekly expense summary
--"Daily budget nearly reached" warning
+-"Daily budget nearly reached" warning  --IN PROGRESS
 -Export expenses as Excel file
 -Run custom queries via text (Require password? Guard against SQL injection)
 -Create a way to backfill forgotten expense records for a given date
 -Upgrade to production-safe WSGI server
--Remember to add & run more unit tests
+-Update Twilio AWS webhook to HTTPS://
+-Remember to add & run more unit tests  --ADDED TESTS 02/12

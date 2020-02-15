@@ -6,4 +6,5 @@
 -Create a way to backfill forgotten expense records for a given date
 -Upgrade to production-safe WSGI server
 -Update Twilio AWS webhook to HTTPS://
--Remember to add & run more unit tests  --ADDED TESTS 02/12
+-Remember to add & run more unit tests  --ADDED TESTS 02/12  **ADD check_alerts TESTS, SO MANY WAYS IT COULD GO WRONG**
+-Migrate SQLite DB to MySQL (SQLAlchemy?)  --ACTIVATED & CODED CONNECTION FOR AMAZON RDS 02/14

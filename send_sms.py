@@ -1,6 +1,10 @@
+#Standardlib Imports
 import os
 
+#3rd Party Module Imports
 from twilio.rest import Client
+
+#Project File Imports
 from database_commands import query_spent_today
 
 account_sid = os.environ.get('twilio_account_sid')

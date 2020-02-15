@@ -1,6 +1,11 @@
+#Standardlib Imports
+#
+
+#3rd Party Module Imports
 from flask import Flask, request, redirect
 from twilio.twiml.messaging_response import MessagingResponse
 
+#Project File Imports
 from database_commands import add_entry
 from parsing_logic import parse_expense, shortcuts
 from send_sms import check_alerts

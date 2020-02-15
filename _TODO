@@ -8,3 +8,4 @@
 -Update Twilio AWS webhook to HTTPS://
 -Remember to add & run more unit tests  --ADDED TESTS 02/12  **ADD check_alerts TESTS, SO MANY WAYS IT COULD GO WRONG**
 -Migrate SQLite DB to MySQL (SQLAlchemy?)  --ACTIVATED & CODED CONNECTION FOR AMAZON RDS 02/14
+-Consider refactoring response.message from main.py into custom_notif from send_sms.py

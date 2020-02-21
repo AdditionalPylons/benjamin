@@ -26,17 +26,20 @@ def custom_notif(notif):
 
 
 def check_alerts():
+    budget = 300
     spent = int(query_spent_today())
-    remaining = 300 - spent
+    remaining = budget - spent
     infinity = float("inf")
 
     alerts = {
 
-    (200, 300): f"Warning: You've spent {spent} pesos. Only {remaining} remaining!",
-    (300, infinity): f"Warning: You've spent {spent} pesos. Any more and you'll go over budget for today!"
+    (0.66*budget, budget): f"Warning: You've spent {spent} pesos. Only {remaining} remaining!",
+    (budget, infinity): f"Warning: You've spent {spent} pesos. You're {spent-budget} over budget for today!"
 
     }
 
     for (a,b) in alerts.keys():
         if a <= spent < b:
             custom_notif(alerts[(a,b)])
+
+check_alerts()

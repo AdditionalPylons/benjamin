@@ -1,11 +1,25 @@
--Implement metrobus "bus", subway "subway" keyword shortcuts  --CODED, PASSED TESTING 02/12
+#-Implement metrobus "bus", subway "subway" keyword shortcuts  --CODED, PASSED TESTING 02/12
 -Email weekly expense summary
--"Daily budget nearly reached" warning  --CODED, PASSED TESTING 02/13
+#-"Daily budget nearly reached" warning  --CODED, PASSED TESTING 02/13
 -Export expenses as Excel file
--Run custom queries via text (Require password? Guard against SQL injection)
--Create a way to backfill forgotten expense records for a given date
--Upgrade to production-safe WSGI server
--Update Twilio AWS webhook to HTTPS://
--Remember to add & run more unit tests  --ADDED TESTS 02/12  **ADD check_alerts TESTS, SO MANY WAYS IT COULD GO WRONG**
--Migrate SQLite DB to MySQL (SQLAlchemy?)  --ACTIVATED & CODED CONNECTION FOR AMAZON RDS 02/14
+#-Run custom queries via text (Require password? Guard against SQL injection)  --Seems like a bad idea. Use DB admin instead
+#-Create a way to backfill forgotten expense records for a given date  --CODED ON 02/21, AWAITING TESTING
+'''-Upgrade to production-safe WSGI server'''
+'''-Update Twilio AWS webhook to HTTPS://'''
+-Remember to add & run more unit tests  --ADDED TESTS 02/12, 02/21  **ADD check_alerts TESTS, SO MANY WAYS IT COULD GO WRONG**  **FIX TESTS**
+'''-Migrate SQLite DB to MySQL (SQLAlchemy?)  --ACTIVATED & CODED CONNECTION FOR AMAZON RDS 02/14  --RDS FAILING, SETTING UP RASPBERRY PI SERVER'''
 -Consider refactoring response.message from main.py into custom_notif from send_sms.py
+
+-Front end? Django or Flask-Admin etc?
+-Visualizations with matplotlib?
+-Goal setting and tracking?
+-Currency conversion?
+
+'''-Remote connection to server'''
+
+
+Weekly expense summary contents:
+
+-Amount over/under budget, by day and for the whole week
+-Expenses/expense categories where I spent the most money with graphs
+-Something to do with progress towards goals (eventually)?

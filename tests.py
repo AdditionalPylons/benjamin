@@ -1,18 +1,20 @@
-#Standardlib Imports
-import os
+# Standardlib Imports
+"""import os"""
 import unittest
 
-#3rd Party Module Imports
+# 3rd Party Module Imports
 """from twilio.rest import Client"""
 
-#Project File Imports
+# Project File Imports
 from database_commands import add_entry, connect, custom_query, today
 from parsing_logic import parse_expense, shortcuts
 """from send_sms import custom_notif"""
 
+
 class TestParser(unittest.TestCase):
 
-    test_values = {"cost": "00", "item": "test item", "location": "test location", "date": "9999-01-01"}
+    test_values = {"cost": "00", "item": "test item",
+                   "location": "test location", "date": "9999-01-01"}
 
     cost = test_values["cost"]
     item = test_values["item"]
@@ -40,9 +42,10 @@ class TestParser(unittest.TestCase):
     def test_parser_on_cost_item_location_date_input(self):
         self.assertEqual(parse_expense(f"{self.cost} for {self.item} at {self.location} on {self.date}"), (f'{self.date}', f'{self.cost}', f'{self.item}', f'{self.location}'), "Parser is failing on cost,date two-value input.")
 
+
 class TestShortcuts(unittest.TestCase):
 
-    #Remember to update test_cases to include new shortcuts as they are added
+    # Remember to update test_cases to include new shortcuts as they are added
     test_cases = ["bus", "subway"]
 
     def test_bus_shortcut_returns_correct_values(self):
@@ -61,6 +64,7 @@ class TestShortcuts(unittest.TestCase):
         except Exception:
             self.fail(f"{case} shortcut isn't parsing correctly!")
 
+
 class TestDatabase(unittest.TestCase):
 
     def test_database_connection_successful(self):
@@ -77,6 +81,7 @@ class TestDatabase(unittest.TestCase):
         else:
             custom_query("DELETE FROM expenses WHERE date = '9999-01-01' AND cost = '00' AND item = 'test item' AND location = 'test location'")
 
+
 """class TestTwilio(unittest.TestCase):
 
     def test_can_send_sms_to_valid_number(self):
@@ -90,7 +95,6 @@ class TestDatabase(unittest.TestCase):
             client.messages.create(to = my_cell_number,from_ = test_number,body = 'test')
         except Exception:
             self.fail("Can't send SMS with Twilio.")"""
-
 
 
 if __name__ == '__main__':

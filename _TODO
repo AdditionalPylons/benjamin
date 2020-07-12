@@ -7,6 +7,7 @@
 '''-Upgrade to production-safe WSGI server'''
 '''-Update Twilio AWS webhook to HTTPS://'''
 -Remember to add & run more unit tests  --ADDED TESTS 02/12, 02/21  **ADD check_alerts TESTS, SO MANY WAYS IT COULD GO WRONG**  **FIX TESTS**
+    --check_alerts IS BREAKING SOMEWHERE 03/05
 '''-Migrate SQLite DB to MySQL (SQLAlchemy?)  --ACTIVATED & CODED CONNECTION FOR AMAZON RDS 02/14  --RDS FAILING, SETTING UP RASPBERRY PI SERVER'''
 -Consider refactoring response.message from main.py into custom_notif from send_sms.py
 

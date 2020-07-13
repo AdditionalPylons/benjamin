@@ -10,15 +10,17 @@ import pymysql
 
 database = 'expense_history'
 table = 'expenses'
-table_columns = '(date, cost, item, location)'
+table_columns = '(user, date, cost, item, location)'
 today = str(datetime.date.today())
-instance1 = os.environ.get('awsdb-instance1')
-instance1_user = os.environ.get('awsdb-instance1_user')
-instance1_password = os.environ.get('awsdb-instance1_password')
+instance1_host = os.environ.get('INSTANCE1_HOST')
+instance1_port = int(os.environ.get('INSTANCE1_PORT'))
+instance1_user = os.environ.get('INSTANCE1_USER')
+instance1_password = os.environ.get('INSTANCE1_PASSWORD')
 
 """expenses table structure is as follows:
 
 TABLE expenses (
+user TEXT NOT NULL,
 id INTEGER PRIMARY KEY AUTO_INCREMENT,
 date DATE NOT NULL,
 cost FLOAT NOT NULL,
@@ -31,13 +33,13 @@ location TEXT
 
 def connect():
     connection = pymysql.connect(
-        instance1, instance1_user, instance1_password, database)
+        host=instance1_host, port=instance1_port, user=instance1_user, password=instance1_password, database=database)
     connection.close()
 
 
 def query_all():
     connection = pymysql.connect(
-        instance1, instance1_user, instance1_password, database)
+        host=instance1_host, port=instance1_port, user=instance1_user, password=instance1_password, database=database)
     cursor = connection.cursor()
     cursor.execute("SELECT * FROM expenses")
     print(cursor.fetchall())
@@ -47,7 +49,7 @@ def query_all():
 
 def query_all_today():
     connection = pymysql.connect(
-        instance1, instance1_user, instance1_password, database)
+        host=instance1_host, port=instance1_port, user=instance1_user, password=instance1_password, database=database)
     cursor = connection.cursor()
     cursor.execute(f"SELECT * FROM expenses WHERE date = '{today}'")
     print(cursor.fetchall())
@@ -57,7 +59,7 @@ def query_all_today():
 
 def query_spent_today():
     connection = pymysql.connect(
-        instance1, instance1_user, instance1_password, database)
+        host=instance1_host, port=instance1_port, user=instance1_user, password=instance1_password, database=database)
     cursor = connection.cursor()
     cursor.execute(f"SELECT SUM(cost) FROM expenses WHERE date = '{today}'")
     result = cursor.fetchone()[0]
@@ -71,7 +73,7 @@ def query_spent_today():
 
 def add_entry(date, cost, item='NULL', location='NULL'):
     connection = pymysql.connect(
-        instance1, instance1_user, instance1_password, database)
+        host=instance1_host, port=instance1_port, user=instance1_user, password=instance1_password, database=database)
     cursor = connection.cursor()
     cursor.execute(
         f"""INSERT INTO {table}{table_columns}
@@ -82,7 +84,7 @@ def add_entry(date, cost, item='NULL', location='NULL'):
 
 def custom_query(query):
     connection = pymysql.connect(
-        instance1, instance1_user, instance1_password, database)
+        host=instance1_host, port=instance1_port, user=instance1_user, password=instance1_password, database=database)
     cursor = connection.cursor()
     cursor.execute(query)
     print(cursor.fetchall())

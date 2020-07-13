@@ -7,10 +7,10 @@ from twilio.rest import Client
 # Project File Imports
 from database_commands import query_spent_today
 
-account_sid = os.environ.get('twilio_account_sid')
-auth_token = os.environ.get('twilio_auth_token')
-my_cell_number = os.environ.get('my_cell_number')
-twilio_number = os.environ.get('twilio_number')
+account_sid = os.environ.get('TWILIO_ACCOUND_SID')
+auth_token = os.environ.get('TWILIO_AUTH_TOKEN')
+my_cell_number = os.environ.get('MY_CELL_NUMBER')
+twilio_number = os.environ.get('TWILIO_NUMBER')
 
 client = Client(account_sid, auth_token)
 

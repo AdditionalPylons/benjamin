@@ -13,7 +13,7 @@ from send_sms import check_alerts
 application = Flask(__name__)
 
 
-@application.route('/sms', methods=['GET', 'POST'])
+@application.route('/callben', methods=['GET', 'POST'])
 def ingest_message():
     message_body = request.form['Body']
     response = MessagingResponse()

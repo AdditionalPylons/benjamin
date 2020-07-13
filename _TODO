@@ -10,6 +10,7 @@
     --check_alerts IS BREAKING SOMEWHERE 03/05
 '''-Migrate SQLite DB to MySQL (SQLAlchemy?)  --ACTIVATED & CODED CONNECTION FOR AMAZON RDS 02/14  --RDS FAILING, SETTING UP RASPBERRY PI SERVER'''
 -Consider refactoring response.message from main.py into custom_notif from send_sms.py
+-Support for multiple users
 
 -Front end? Django or Flask-Admin etc?
 -Visualizations with matplotlib?

@@ -1,4 +1,5 @@
 # Standardlib Imports
+from contextlib import contextmanager
 import datetime
 import os
 
@@ -52,77 +53,78 @@ summary_email_time TIME CHECK (HOUR(summary_email_time) < 24) DEFAULT '8:00'
 
 """
 
-
+@contextmanager
 def connect():
     connection = pymysql.connect(
         host=instance1_host, port=instance1_port, user=instance1_user, password=instance1_password, database=database)
-    connection.close()
-
+    try:
+        yield connection
+    finally:
+        connection.commit()
+        connection.close()
 
 def query_all():
-    connection = pymysql.connect(
-        host=instance1_host, port=instance1_port, user=instance1_user, password=instance1_password, database=database)
-    cursor = connection.cursor()
-    cursor.execute("SELECT * FROM expenses")
-    print(cursor.fetchall())
-    connection.commit()
-    connection.close()
-
+    with connect() as con:
+        with con.cursor() as cursor:
+            cursor.execute("SELECT * FROM expenses")
+            print(cursor.fetchall())
 
 def query_all_today():
-    connection = pymysql.connect(
-        host=instance1_host, port=instance1_port, user=instance1_user, password=instance1_password, database=database)
-    cursor = connection.cursor()
-    cursor.execute(f"SELECT * FROM expenses WHERE date = '{today}'")
-    print(cursor.fetchall())
-    connection.commit()
-    connection.close()
+    with connect() as con:
+        with con.cursor() as cursor:
+            cursor.execute(f"SELECT * FROM expenses WHERE date = '{today}'")
+            print(cursor.fetchall())
 
-
-def query_spent_today():
-    connection = pymysql.connect(
-        host=instance1_host, port=instance1_port, user=instance1_user, password=instance1_password, database=database)
-    cursor = connection.cursor()
-    cursor.execute(f"SELECT SUM(cost) FROM expenses WHERE date = '{today}'")
-    result = cursor.fetchone()[0]
-    if result is None:
-        return 0
-    else:
-        return result
-    connection.commit()
-    connection.close()
-
+def query_spent(user_id, date=today):
+    with connect() as con:
+        with con.cursor() as cursor:
+            cursor.execute(f"""SELECT SUM(cost) FROM expenses
+                            WHERE user_id = {user_id} AND date = '{date}'""")
+            result = cursor.fetchone()[0]
+            if result is None:
+                return 0
+            else:
+                return result
 
 def add_entry(user_id, date, cost, item='NULL', location='NULL'):
-    connection = pymysql.connect(
-        host=instance1_host, port=instance1_port, user=instance1_user, password=instance1_password, database=database)
-    cursor = connection.cursor()
-    cursor.execute(
-        f"""INSERT INTO {table}{table_columns}
-         VALUES('{user_id}','{date}', {cost}, '{item}', '{location}')""")
-    connection.commit()
-    connection.close()
+    with connect() as con:
+        with con.cursor() as cursor:
+            cursor.execute(
+                f"""INSERT INTO {table}{table_columns}
+                 VALUES('{user_id}','{date}', {cost}, '{item}', '{location}')""")
 
 # Returns a list for easy concat with parse_expense
 def get_user_id(phone_number):
-    connection = pymysql.connect(
-        host=instance1_host, port=instance1_port, user=instance1_user, password=instance1_password, database=database)
-    cursor = connection.cursor()
-    cursor.execute(f"SELECT user_id FROM users WHERE phone_number = '{phone_number}'")
-    result = cursor.fetchone()
-    if result is None:
-        raise Exception(f"No user ID found for phone number '{phone_number}'")
-    else:
-        return list(result)
-    connection.commit()
-    connection.close()
+    with connect() as con:
+        with con.cursor() as cursor:
+            cursor.execute(f"SELECT user_id FROM users WHERE phone_number = '{phone_number}'")
+            result = cursor.fetchone()
+            if result is None:
+                raise Exception(f"No user ID found for phone number '{phone_number}'")
+            else:
+                return list(result)
 
+def get_budget(user_id,period):
+    with connect() as con:
+        with con.cursor() as cursor:
+            cursor.execute(
+                f"""SELECT {period}_budget FROM users WHERE user_id = '{user_id}'""")
+            result = cursor.fetchone()
+            #arbitrarily large non-infinite number used for non-existent budget
+            if result is None:
+                return 100**100
+            else:
+                return result
+
+def set_budget(user_id,period,amount):
+    with connect() as con:
+        with con.cursor() as cursor:
+            cursor.execute(
+                f"""UPDATE users SET {period}_budget = {amount}
+                 WHERE user_id = {user_id}""")
 
 def custom_query(query):
-    connection = pymysql.connect(
-        host=instance1_host, port=instance1_port, user=instance1_user, password=instance1_password, database=database)
-    cursor = connection.cursor()
-    cursor.execute(query)
-    print(cursor.fetchall())
-    connection.commit()
-    connection.close()
+    with connect() as con:
+        with con.cursor() as cursor:
+            cursor.execute(query)
+            print(cursor.fetchall())

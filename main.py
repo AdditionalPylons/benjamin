@@ -19,19 +19,20 @@ def ingest_message():
     message_body = request.form['Body']
     response = MessagingResponse()
 
+    user_id = get_user_id(number)
     try:
         # USAGE NOTE: When using add_entry with parse_expense,
         # you MUST unpack the resulting list with * as follows:
         # add_entry(*parse_expense('123 for some thing at some place'))
         if message_body in shortcuts:
-            add_entry(*get_user_id(number)+parse_expense(shortcuts[message_body]))
+            add_entry(*user_id+parse_expense(shortcuts[message_body]))
         else:
-            add_entry(*get_user_id(number)+parse_expense(message_body))
+            add_entry(*user_id+parse_expense(message_body))
         response.message('Entry successfully added!')
-        check_alerts()
     except Exception:
         response.message('Failed to add entry.')
     finally:
+        check_alerts(user_id, number)
         return str(response)
 
 

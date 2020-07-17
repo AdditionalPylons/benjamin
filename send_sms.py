@@ -15,20 +15,20 @@ twilio_number = os.environ.get('TWILIO_NUMBER')
 client = Client(account_sid, auth_token)
 
 
-def custom_notif(notif):
+def custom_notif(phone_number,notif):
 
     client.messages.create(
 
-        to=my_cell_number,
-        from_=twilio_number,
+        to=phone_number,
+        from_=TWILIO_NUMBER,
         body=notif
 
         )
 
 
-def check_alerts():
-    budget = 300
-    spent = int(query_spent_today())
+def check_alerts(user_id, phone_number, peroid='daily'):
+    budget = int(get_budget(user_id, peroid))
+    spent = int(query_spent(user_id))
     remaining = budget - spent
     infinity = float("inf")
 
@@ -43,7 +43,4 @@ def check_alerts():
 
     for (a, b) in alerts.keys():
         if a <= spent < b:
-            custom_notif(alerts[(a, b)])
-
-
-check_alerts()
+            custom_notif(phone_number, alerts[(a, b)])

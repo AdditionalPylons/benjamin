@@ -19,7 +19,7 @@ def parse_expense(input):
                             r'(?: at (?P<location>.+?))?'
                             # Everything after "at" = location, optional
                             r'(?: on (?P<date>.+))?$'
-                            # Everything after "at" = location, optional
+                            # Everything after "on" = date, optional
                             )
     if re.search('(?: on (?P<date>.+))$', input):
         parsed_result = list(sms_syntax.search(input).group(

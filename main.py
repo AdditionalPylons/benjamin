@@ -10,10 +10,10 @@ from database_commands import add_entry, get_user_id
 from parsing_logic import parse_expense, shortcuts
 from send_sms import check_alerts
 
-application = Flask(__name__)
+app = Flask(__name__)
 
 
-@application.route('/callben', methods=['GET', 'POST'])
+@app.route('/callben', methods=['GET', 'POST'])
 def ingest_message():
     number = request.form['From']
     message_body = request.form['Body']
@@ -37,4 +37,4 @@ def ingest_message():
 
 
 if __name__ == '__main__':
-    application.run(debug=False)
+    app.run(host='0.0.0.0')

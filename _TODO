@@ -4,13 +4,15 @@
 -Export expenses as Excel file
 #-Run custom queries via text (Require password? Guard against SQL injection)  --Seems like a bad idea. Use DB admin instead
 #-Create a way to backfill forgotten expense records for a given date  --CODED ON 02/21, AWAITING TESTING
-'''-Upgrade to production-safe WSGI server'''
-'''-Update Twilio AWS webhook to HTTPS://'''
+#-Upgrade to production-safe WSGI server  --DONE ON 07/13
+#-Update Twilio AWS webhook to HTTPS://  --DONE ON 07/13
 -Remember to add & run more unit tests  --ADDED TESTS 02/12, 02/21  **ADD check_alerts TESTS, SO MANY WAYS IT COULD GO WRONG**  **FIX TESTS**
     --check_alerts IS BREAKING SOMEWHERE 03/05
 '''-Migrate SQLite DB to MySQL (SQLAlchemy?)  --ACTIVATED & CODED CONNECTION FOR AMAZON RDS 02/14  --RDS FAILING, SETTING UP RASPBERRY PI SERVER'''
 -Consider refactoring response.message from main.py into custom_notif from send_sms.py
 -Support for multiple users
+-Custom shortcuts per user
+-Should add-entry be updated to take a list?
 
 -Front end? Django or Flask-Admin etc?
 -Visualizations with matplotlib?

@@ -9,6 +9,7 @@ import re
 #
 
 
+# Returns a comma-separated list of string
 def parse_expense(input):
 
     sms_syntax = re.compile(r'(?P<cost>\d+)'
@@ -21,11 +22,11 @@ def parse_expense(input):
                             # Everything after "at" = location, optional
                             )
     if re.search('(?: on (?P<date>.+))$', input):
-        parsed_result = tuple(list(sms_syntax.search(input).group(
-            'date', 'cost', 'item', 'location')))
+        parsed_result = list(sms_syntax.search(input).group(
+            'date', 'cost', 'item', 'location'))
     else:
-        parsed_result = tuple([str(datetime.date.today())]+list(
-            sms_syntax.search(input).group('cost', 'item', 'location')))
+        parsed_result = [str(datetime.date.today())]+list(
+            sms_syntax.search(input).group('cost', 'item', 'location'))
     return parsed_result
 
 

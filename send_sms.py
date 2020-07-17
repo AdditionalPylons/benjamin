@@ -5,7 +5,7 @@ import os
 from twilio.rest import Client
 
 # Project File Imports
-from database_commands import query_spent_today
+from database_commands import query_spent
 
 account_sid = os.environ.get('TWILIO_ACCOUND_SID')
 auth_token = os.environ.get('TWILIO_AUTH_TOKEN')

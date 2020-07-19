@@ -1,13 +1,13 @@
 # Standardlib Imports
-#
+import time
 
 # 3rd Party Module Imports
 from flask import Flask, request
-from twilio.twiml.messaging_response import MessagingResponse
+
 
 # Project File Imports
 from database_commands import add_entry, get_user_id
-from parsing_logic import parse_expense, shortcuts
+from parsing_logic import parse_inc_message
 from send_sms import check_alerts
 
 app = Flask(__name__)
@@ -17,23 +17,12 @@ app = Flask(__name__)
 def ingest_message():
     number = request.form['From']
     message_body = request.form['Body']
-    response = MessagingResponse()
 
     user_id = get_user_id(number)
-    try:
-        # USAGE NOTE: When using add_entry with parse_expense,
-        # you MUST unpack the resulting list with * as follows:
-        # add_entry(*parse_expense('123 for some thing at some place'))
-        if message_body in shortcuts:
-            add_entry(*user_id+parse_expense(shortcuts[message_body]))
-        else:
-            add_entry(*user_id+parse_expense(message_body))
-        response.message('Entry successfully added!')
-    except Exception:
-        response.message('Failed to add entry.')
-    finally:
-        check_alerts(user_id, number)
-        return str(response)
+
+    return parse_inc_message(user_id, number, message_body)
+
+
 
 
 if __name__ == '__main__':

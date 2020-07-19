@@ -1,6 +1,6 @@
 # Standardlib Imports
 from contextlib import contextmanager
-import datetime
+import datetime as dt
 import os
 
 # 3rd Party Module Imports
@@ -12,7 +12,9 @@ import pymysql
 database = 'expense_history'
 table = 'expenses'
 table_columns = '(user_id, date, cost, item, location)'
-today = str(datetime.date.today())
+today = str(dt.date.today())
+this_week = f"BETWEEN '{today}-7' AND '{today}'"
+this_month = f"BETWEEN '{today}-30' AND '{today}'"
 instance1_host = os.environ.get('INSTANCE1_HOST')
 instance1_port = int(os.environ.get('INSTANCE1_PORT'))
 instance1_user = os.environ.get('INSTANCE1_USER')
@@ -56,7 +58,11 @@ summary_email_time TIME CHECK (HOUR(summary_email_time) < 24) DEFAULT '8:00'
 @contextmanager
 def connect():
     connection = pymysql.connect(
-        host=instance1_host, port=instance1_port, user=instance1_user, password=instance1_password, database=database)
+        host=instance1_host,
+        port=instance1_port,
+        user=instance1_user,
+        password=instance1_password,
+        database=database)
     try:
         yield connection
     finally:
@@ -86,6 +92,17 @@ def query_spent(user_id, date=today):
             else:
                 return result
 
+def query_spent_range(user_id, range):
+    with connect() as con:
+        with con.cursor() as cursor:
+            cursor.execute(f"""SELECT SUM(cost) FROM expenses
+                            WHERE user_id = {user_id} AND date BETWEEN {range}""")
+            result = cursor.fetchone()[0]
+            if result is None:
+                return 0
+            else:
+                return result
+
 def add_entry(user_id, date, cost, item='NULL', location='NULL'):
     with connect() as con:
         with con.cursor() as cursor:
@@ -108,8 +125,8 @@ def get_budget(user_id,period):
     with connect() as con:
         with con.cursor() as cursor:
             cursor.execute(
-                f"""SELECT {period}_budget FROM users WHERE user_id = '{user_id}'""")
-            result = cursor.fetchone()
+                f"""SELECT {period}_budget FROM users WHERE user_id = {user_id}""")
+            result = cursor.fetchone()[0]
             #arbitrarily large non-infinite number used for non-existent budget
             if result is None:
                 return 100**100

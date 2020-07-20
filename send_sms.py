@@ -34,9 +34,9 @@ def check_alerts(user_id, phone_number, period='daily'):
 
     alerts = {
 
-        (0.66*budget, budget): (f"Warning: You've spent {spent} pesos."
+        (0.66*budget, budget): (f"Warning: You've spent {spent} pesos. "
                                 f"Only {remaining} remaining!"),
-        (budget, infinity): (f"Warning: You've spent {spent} pesos."
+        (budget, infinity): (f"Warning: You've spent {spent} pesos. "
                                 f"You're {spent-budget} over budget for today!")
 
             }

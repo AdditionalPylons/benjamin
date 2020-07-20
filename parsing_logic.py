@@ -6,7 +6,7 @@ import re
 from twilio.twiml.messaging_response import MessagingResponse
 
 # Project File Imports
-from database_commands import add_entry, query_spent, this_week, this_month
+from database_commands import add_entry, query_spent, query_spent_range, today, this_week, this_month
 from send_sms import check_alerts
 
 
@@ -16,16 +16,16 @@ from send_sms import check_alerts
 def parse_inc_message(user_id, phone_number, input):
 
     commands = {
-"""
-        "spent": query_spent(user_id),
-        "spent today": query_spent(user_id),
-        "spent week": query_spent(user_id, this_week),
-        "spent month": query_spent(user_id, this_month),
+
+        "spent": (query_spent, *user_id, today),
+        "spent today": (query_spent, *user_id, today),
+        "spent week": (query_spent_range, *user_id, this_week),
+        "spent month": (query_spent_range, *user_id, this_month),
         "left": "",
         "left today": "",
         "left week": "",
         "left month": ""
-"""
+
                 }
 
     shortcuts = {
@@ -39,12 +39,12 @@ def parse_inc_message(user_id, phone_number, input):
 
     try:
         if input in commands:
-            return commands[input]
+            response.message(str(commands[input][0](commands[input][1], commands[input][2])))
         elif input in shortcuts:
             add_entry(*user_id+parse_expense(shortcuts[input]))
             response.message("Entry successfuly added!")
         else:
-            add_entry(*user_id+parse_expense(message_body))
+            add_entry(*user_id+parse_expense(input))
             response.message("Entry successfuly added!")
     except Exception:
         response.message("Uh-oh! Something went wrong. Please try again.")
